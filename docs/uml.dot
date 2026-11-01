@@ -1,0 +1,83 @@
+digraph G {
+  graph [rankdir=LR, fontname="Helvetica", fontsize=11, labelloc="t", label="Assignment 6 - Public Transport Observer + Visitor"];
+  node [shape=box, style="rounded", fontname="Helvetica", fontsize=9];
+  edge [fontname="Helvetica", fontsize=8];
+
+  subgraph cluster_observer {
+    label="Observer side";
+    Subject [label="Subject<E>\nsubscribe / unsubscribe / publish"];
+    Observer [label="Observer<E>\nonEvent(E)"];
+    Arrival [label="VehicleArrivalSource"];
+    Rider [label="RidershipSource"];
+    Delay [label="DelayAlertService\nObserver + Subject"];
+    Agg [label="RidershipAggregator\nObserver + Subject"];
+    Display [label="StopDisplayListener"];
+    App [label="PassengerAppListener"];
+    Stats [label="RidershipStatisticsListener"];
+    Cache [label="JourneyCacheListener"];
+    OneShot [label="OneShotArrivalListener"];
+    ReportSubject [label="ConcurrentEventSubject\ninspection reports"];
+    Maint [label="MaintenanceDashboardListener"];
+
+    Arrival -> Subject [label="implements"];
+    Rider -> Subject [label="implements"];
+    Delay -> Observer [label="implements"];
+    Delay -> Subject [label="implements"];
+    Agg -> Observer [label="implements"];
+    Agg -> Subject [label="implements"];
+    Display -> Observer [label="implements"];
+    App -> Observer [label="implements"];
+    Stats -> Observer [label="implements"];
+    Cache -> Observer [label="implements"];
+    OneShot -> Observer [label="implements"];
+    Maint -> Observer [label="implements"];
+    Arrival -> Delay [label="VEHICLE_ARRIVAL"];
+    Rider -> Agg [label="RIDERSHIP_UPDATED"];
+    Delay -> App [label="DELAY_REPORTED"];
+    Agg -> App [label="AGGREGATED_METRIC"];
+    ReportSubject -> Maint [label="INSPECTION_REPORT"];
+  }
+
+  subgraph cluster_visitor {
+    label="Visitor side";
+    Element [label="TransportElement\naccept(Visitor<R>)"];
+    Visitor [label="TransportVisitor<R>\nvisitX(...)"];
+    Network [label="TransportNetwork"];
+    Route [label="Route"];
+    Stop [label="Stop"];
+    Bus [label="Bus"];
+    Tram [label="Tram"];
+    Station [label="StationFacility"];
+    Machine [label="TicketMachine"];
+    Revenue [label="TicketRevenueVisitor"];
+    Audit [label="AccessibilityAuditVisitor"];
+    Filter [label="AccessibleElementFilterVisitor"];
+    Json [label="JsonExportVisitor"];
+
+    Network -> Element [label="implements"];
+    Route -> Element [label="implements"];
+    Stop -> Element [label="implements"];
+    Bus -> Element [label="implements"];
+    Tram -> Element [label="implements"];
+    Station -> Element [label="implements"];
+    Machine -> Element [label="implements"];
+    Revenue -> Visitor [label="implements"];
+    Audit -> Visitor [label="implements"];
+    Filter -> Visitor [label="implements"];
+    Json -> Visitor [label="implements"];
+    Network -> Route [label="contains"];
+    Route -> Stop [label="contains"];
+    Stop -> Bus [label="contains"];
+    Stop -> Tram [label="contains"];
+    Stop -> Station [label="contains"];
+    Stop -> Machine [label="contains"];
+  }
+
+  Coordinator [label="InspectionCoordinator\nObserver event -> Visitor on route subtree"];
+  Index [label="TransportTreeIndex"];
+  Delay -> Coordinator [label="DELAY_REPORTED"];
+  Coordinator -> Index [label="find route"];
+  Index -> Route [label="returns subtree"];
+  Coordinator -> Audit [label="runs"];
+  Coordinator -> ReportSubject [label="publishes report"];
+}
