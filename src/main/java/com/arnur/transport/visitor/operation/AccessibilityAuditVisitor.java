@@ -21,4 +21,5 @@ public final class AccessibilityAuditVisitor implements TransportVisitor<Accessi
     private AccessibilityAudit leaf(String id, boolean accessible) {
         return new AccessibilityAudit(1, accessible ? 1 : 0, accessible ? List.of() : List.of(id + " is not accessible"));
     }
+    @Override public AccessibilityAudit visitTicketMachine(TicketMachine machine) { return leaf(machine.id(), machine.accessible()); }
 }

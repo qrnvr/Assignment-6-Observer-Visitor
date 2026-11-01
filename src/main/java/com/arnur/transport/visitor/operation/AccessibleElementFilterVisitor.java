@@ -24,4 +24,5 @@ public final class AccessibleElementFilterVisitor implements TransportVisitor<Li
     @Override public List<TransportElement> visitBus(Bus bus) { return bus.accessible() ? List.of(bus) : List.of(); }
     @Override public List<TransportElement> visitTram(Tram tram) { return tram.accessible() ? List.of(tram) : List.of(); }
     @Override public List<TransportElement> visitStationFacility(StationFacility station) { return station.accessible() ? List.of(station) : List.of(); }
+    @Override public List<TransportElement> visitTicketMachine(TicketMachine machine) { return machine.accessible() ? List.of(machine) : List.of(); }
 }

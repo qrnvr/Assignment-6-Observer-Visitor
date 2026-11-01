@@ -17,4 +17,5 @@ public final class TicketRevenueVisitor implements TransportVisitor<BigDecimal> 
     @Override public BigDecimal visitBus(Bus bus) { return bus.ticketRevenue(); }
     @Override public BigDecimal visitTram(Tram tram) { return tram.ticketRevenue(); }
     @Override public BigDecimal visitStationFacility(StationFacility station) { return station.ticketRevenue(); }
+    @Override public BigDecimal visitTicketMachine(TicketMachine machine) { return machine.ticketRevenue(); }
 }

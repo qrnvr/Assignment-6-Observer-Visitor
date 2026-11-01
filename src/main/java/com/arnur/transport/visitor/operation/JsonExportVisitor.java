@@ -20,6 +20,7 @@ public final class JsonExportVisitor implements TransportVisitor<String> {
     @Override public String visitBus(Bus bus) { return leaf("bus", bus.id(), bus.name(), bus.accessible()); }
     @Override public String visitTram(Tram tram) { return leaf("tram", tram.id(), tram.name(), tram.accessible()); }
     @Override public String visitStationFacility(StationFacility station) { return leaf("station", station.id(), station.name(), station.accessible()); }
+    @Override public String visitTicketMachine(TicketMachine machine) { return leaf("ticketMachine", machine.id(), machine.name(), machine.accessible()); }
 
     private String leaf(String type, String id, String name, boolean accessible) {
         return "{\"type\":\"" + type + "\",\"id\":\"" + esc(id) + "\",\"name\":\"" + esc(name) +
